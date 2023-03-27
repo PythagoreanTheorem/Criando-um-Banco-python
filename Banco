@@ -1,0 +1,65 @@
+saldo = 0
+LIMITE = 500
+extrato = []
+LIMITE_DIARIO_SAQUE = 3
+ir_menu = "s"
+voltar = ""
+caminho = "extra"
+while(True):
+    match caminho:
+        case "extra": 
+            menu = f'''
+            Seu saldo é de: R${saldo:.2f}
+            [1] Depósito
+            [2] Saque
+            [3] Extrato
+            [0] Fim
+            '''
+            caminho = int(input(menu))
+        
+        case 1:
+            deposito = float(input("Digite o valor do depósito:\n"))
+            extrato.append(f"O valor depositado foi R${deposito:.2f},")
+            saldo += deposito
+            voltar = input("Deseja voltar ao menu?(s/n)\n")
+
+            if(voltar == "s"):
+                caminho = "extra"
+                
+
+        case 2: #saque
+            if(LIMITE_DIARIO_SAQUE > 0):
+                saque = float(input("Digite o valor do saque(Máximo de R$500,00):\n "))
+                if(saque <= saldo):
+                    if(saque <= 500):
+                        extrato.append(f"O valor sacado foi R${saque:.2f},")
+                        saldo -= saque  
+                        LIMITE_DIARIO_SAQUE -= 1  
+                        voltar = input("Deseja voltar ao menu?(s/n)\n")
+                        if(voltar == "s"):
+                            caminho = "extra"
+
+                    else:
+                        print("Valor alto demais para saque!!")
+                        continue
+                else:
+                    print("Você não possui saldo suficiente!")
+            else:
+                print("Você não possui saques disponíveis para o dia!")
+
+        case 3: #extrato
+            tamanho_extrato = len(extrato)
+            if(tamanho_extrato > 0):
+                for transacao in extrato:
+                    print(transacao)
+        
+            else:
+                print("Você não fez transações hoje.")
+            voltar = input("Aperte enter para voltar ao menu\n ")
+            caminho = "extra"
+
+        case 4: #fim
+            break
+
+        case _:
+            print("Resposta inválida, tente novamente!")
